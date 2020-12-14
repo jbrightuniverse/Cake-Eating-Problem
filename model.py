@@ -21,8 +21,7 @@ class OptimalGrowthModel:
     # V(W) = u(c)+V(W-c) after we substitute the constraint
 
   def T(self, v):
-    # this function conducts an iteration of the value function
-    # across the grid vector
+    # this function applies the value function across the grid vector
     # in order to find an optimal solution given the existing vector
     v_new = np.empty_like(v)
     v_greedy = np.empty_like(v)
@@ -43,12 +42,14 @@ class OptimalGrowthModel:
   def solve_model(self):
     v = self.u(self.grid)
 
-    tol=1e-4
-    max_iter=1000
+    tol=1e-4 # how precise we want the answer to be
+    max_iter=1000 # if we iterate more than this many times, we failed
     i = 0
     error = tol + 1
 
     while i < max_iter and error > tol:
+      # while we haven't converged, continue iterating the value function
+      # this is a method of solving dynamic programs known as value function iteration
       v_greedy, v_new = self.T(v)
       error = np.max(np.abs(v - v_new))
       i += 1
